@@ -6,7 +6,7 @@ import QRScanner from "./QRScanner"; // Importar el componente QRScanner
 function TicketsList() {
   const [tickets, setTickets] = useState([]);
   const [showScanner, setShowScanner] = useState(false); // Estado para mostrar/ocultar el escáner
-  const templateUrl = "/plantillaQr.png"; // Ruta local de la plantilla
+  const templateUrl = "/plantillaQr.png"; 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Función para obtener los tickets desde el backend
