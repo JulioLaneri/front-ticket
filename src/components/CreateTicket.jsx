@@ -12,6 +12,7 @@ function CreateTicket() {
   });
   const [ticketCreated, setTicketCreated] = useState(false);
   const [qrCodeData, setQrCodeData] = useState("");
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,7 +20,7 @@ function CreateTicket() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5001/create_ticket", {
+    const response = await fetch(`${API_BASE_URL}/create_ticket`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

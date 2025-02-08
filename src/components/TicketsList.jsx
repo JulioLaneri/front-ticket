@@ -7,11 +7,13 @@ function TicketsList() {
   const [tickets, setTickets] = useState([]);
   const [showScanner, setShowScanner] = useState(false); // Estado para mostrar/ocultar el escáner
   const templateUrl = "/plantillaQr.png"; // Ruta local de la plantilla
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Función para obtener los tickets desde el backend
   const fetchTickets = async () => {
     try {
-      const response = await fetch("http://localhost:5001/get_tickets");
+      const response = await fetch(`${API_BASE_URL}/get_tickets`);
+      
       if (!response.ok) {
         throw new Error("Error al obtener los tickets");
       }
@@ -29,7 +31,7 @@ function TicketsList() {
 
     // Llamar al backend para validar el ticket
     try {
-      const response = await fetch(`http://localhost:5001/scan_ticket/${qrCodeData}`);
+      const response = await fetch(`${API_BASE_URL}/scan_ticket/${qrCodeData}`);
       const data = await response.json();
       if (response.ok) {
         alert(`Ticket validado: ${data.message}`);
