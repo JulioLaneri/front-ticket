@@ -6,7 +6,7 @@ import QRScanner from "./QRScanner"; // Importar el componente QRScanner
 function TicketsList() {
   const [tickets, setTickets] = useState([]);
   const [showScanner, setShowScanner] = useState(false); // Estado para mostrar/ocultar el escáner
-  const templateUrl = "/plantillaQr.png"; 
+  const templateUrl = "/plantillaQR.jpg"; 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Función para obtener los tickets desde el backend
@@ -61,7 +61,7 @@ const downloadTicketPDF = async (ticket) => {
 
   // Cargar la plantilla JPG (asegúrate de que la imagen esté optimizada)
   const template = new Image();
-  template.src = "/plantillaQr.jpg"; // Ruta a la plantilla en la carpeta public
+  template.src = templateUrl; // Ruta a la plantilla en la carpeta public
 
   template.onload = () => {
     console.log("Plantilla cargada correctamente"); // Depuración
