@@ -26,7 +26,7 @@ function TicketsList() {
     }
   };
 
-  
+
   const handleScan = async (qrCodeData) => {
     setShowScanner(false);
     console.log("Código QR escaneado:", qrCodeData);
@@ -134,7 +134,7 @@ function TicketsList() {
                 <td>{ticket.email}</td>
                 <td>{ticket.event}</td>
                 <td>
-                  <button className={`btn btn-sm ${ticket.status === "activo" ? "btn-outline-success" : "btn-outline-danger"}`}>
+                  <button className={`btn btn-sm ${ticket.status === "active" ? "btn-outline-success" : "btn-outlsine-danger"}`}>
                     {ticket.status}
                   </button>
                 </td>
