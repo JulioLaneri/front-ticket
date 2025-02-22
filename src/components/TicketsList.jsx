@@ -7,7 +7,7 @@ function TicketsList() {
   const [tickets, setTickets] = useState([]);
   const [showScanner, setShowScanner] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc"); // 'desc' para más recientes primero
+  const [sortOrder, setSortOrder] = useState("desc");
   const templateUrl = "/plantillaQR.jpg";
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -26,13 +26,62 @@ function TicketsList() {
     }
   };
 
+  const handleScan = async (qrCodeData) => {
+    setShowScanner(false);
+    console.log("Código QR escaneado:", qrCodeData);
+    try {
+      const response = await fetch(`${API_BASE_URL}/scan_ticket/${qrCodeData}`);
+      const data = await response.json();
+      if (response.ok) {
+        alert(`Ticket validado: ${data.message}`);
+        fetchTickets();
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Error al validar el ticket:", error);
+      alert("Error al validar el ticket. Inténtalo de nuevo.");
+    }
+  };
+
+  const downloadTicketPDF = async (ticket) => {
+    if (!ticket.qr_code) {
+      console.error("El valor del QR es undefined. Verifica el backend.");
+      return;
+    }
+    
+    const doc = new jsPDF("p", "px", [595, 842]);
+    const template = new Image();
+    template.src = templateUrl;
+    
+    template.onload = async () => {
+      doc.addImage(template, "JPEG", 0, 0, 595, 842);
+      
+      const qrSize = 150;
+      const qrX = 535 - qrSize;
+      const qrY = 50;
+      
+      try {
+        const qrDataUrl = await QRCode.toDataURL(ticket.qr_code, { width: qrSize });
+        doc.addImage(qrDataUrl, "JPEG", qrX, qrY, qrSize, qrSize);
+        const fileName = `Entrada_${ticket.name.replace(/ /g, "_")}.pdf`;
+        doc.save(fileName);
+      } catch (error) {
+        console.error("Error al generar el QR:", error);
+      }
+    };
+    
+    template.onerror = () => {
+      console.error("Error al cargar la plantilla.");
+      alert("No se pudo cargar la plantilla.");
+    };
+  };
+
   const filteredTickets = tickets
     .filter((ticket) =>
       ticket.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => {
-      return sortOrder === "asc" ? a.id - b.id : b.id - a.id;
-    });
+    .sort((a, b) => (sortOrder === "asc" ? a.id - b.id : b.id - a.id));
 
   return (
     <div className="container mt-5">
@@ -58,7 +107,7 @@ function TicketsList() {
 
       {showScanner && (
         <div className="d-flex justify-content-center mb-3">
-          <QRScanner onScan={() => setShowScanner(false)} />
+          <QRScanner onScan={handleScan} />
         </div>
       )}
 
@@ -68,12 +117,12 @@ function TicketsList() {
         <table className="table table-striped table-bordered" style={{ tableLayout: "fixed", textAlign: "left" }}>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Evento</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <th style={{ width: "5%" }}>ID</th>
+              <th style={{ width: "20%" }}>Nombre</th>
+              <th style={{ width: "30%" }}>Email</th>
+              <th style={{ width: "20%" }}>Evento</th>
+              <th style={{ width: "10%" }}>Estado</th>
+              <th style={{ width: "15%" }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -89,7 +138,9 @@ function TicketsList() {
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-primary btn-sm" onClick={() => console.log("Descargar PDF")}>Descargar PDF</button>
+                  <button className="btn btn-primary btn-sm" onClick={() => downloadTicketPDF(ticket)}>
+                    Descargar PDF
+                  </button>
                 </td>
               </tr>
             ))}

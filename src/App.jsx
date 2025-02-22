@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify"; // Importaciones
+import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "react-toastify/dist/ReactToastify.css"; // Estilos de react-toastify
+import "react-toastify/dist/ReactToastify.css";
 import CreateTicket from "./components/CreateTicket";
 import TicketsList from "./components/TicketsList";
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <ToastContainer position="top-right" autoClose={3000} /> {/* Configuración del ToastContainer */}
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="App" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", width: "100vw", overflowX: "hidden" }}>
+        <ToastContainer position="top-right" autoClose={3000} />
+        <nav className="navbar navbar-expand-lg navbar-light bg-light w-100">
           <div className="container-fluid">
             <Link to="/" className="navbar-brand">Ticket Manager</Link>
             <div className="navbar-nav">
@@ -20,7 +20,7 @@ function App() {
             </div>
           </div>
         </nav>
-        <div className="container mt-4">
+        <div className="container-fluid d-flex justify-content-center" style={{ flex: 1, width: "100vw" }}>
           <Routes>
             <Route path="/" element={<CreateTicket />} />
             <Route path="/tickets" element={<TicketsList />} />
