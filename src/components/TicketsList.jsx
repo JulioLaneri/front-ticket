@@ -26,6 +26,7 @@ function TicketsList() {
     }
   };
 
+  
   const handleScan = async (qrCodeData) => {
     setShowScanner(false);
     console.log("Código QR escaneado:", qrCodeData);
