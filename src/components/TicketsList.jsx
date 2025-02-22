@@ -56,12 +56,16 @@ function TicketsList() {
         </button>
       </div>
 
-      {showScanner && <QRScanner onScan={() => setShowScanner(false)} />}
+      {showScanner && (
+        <div className="d-flex justify-content-center mb-3">
+          <QRScanner onScan={() => setShowScanner(false)} />
+        </div>
+      )}
 
       {filteredTickets.length === 0 ? (
         <p>No hay entradas creadas aún.</p>
       ) : (
-        <table className="table">
+        <table className="table table-striped table-bordered" style={{ tableLayout: "fixed", textAlign: "left" }}>
           <thead>
             <tr>
               <th>ID</th>
@@ -79,8 +83,10 @@ function TicketsList() {
                 <td>{ticket.name}</td>
                 <td>{ticket.email}</td>
                 <td>{ticket.event}</td>
-                <td style={{ color: ticket.status === "activo" ? "green" : "red" }}>
-                  {ticket.status}
+                <td>
+                  <button className={`btn btn-sm ${ticket.status === "activo" ? "btn-outline-success" : "btn-outline-danger"}`}>
+                    {ticket.status}
+                  </button>
                 </td>
                 <td>
                   <button className="btn btn-primary btn-sm" onClick={() => console.log("Descargar PDF")}>Descargar PDF</button>
