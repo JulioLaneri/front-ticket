@@ -134,7 +134,7 @@ function TicketsList() {
                 <td>{ticket.email}</td>
                 <td>{ticket.event}</td>
                 <td>
-                  <button className={`btn btn-sm ${ticket.status === "active" ? "btn-outline-success" : "btn-outlsine-danger"}`}>
+                  <button className={`btn btn-sm ${ticket.status === "active" ? "btn-outline-success" : "btn-outline-danger"}`}>
                     {ticket.status}
                   </button>
                 </td>
